@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" width="520" height="300"
+     role="img" aria-label="Line drawing of five ancient vessels among olive branches">
+  <title>Vessels — the women of Genesis</title>
+  <defs>
+    <radialGradient id="v-mist" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#93a0b0" stop-opacity=".26"/>
+      <stop offset="100%" stop-color="#93a0b0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="v-gold" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0%" stop-color="#b08b2c"/>
+      <stop offset="40%" stop-color="#e9d08a"/>
+      <stop offset="100%" stop-color="#bd952f"/>
+    </linearGradient>
+    <!-- one olive leaf, tip pointing along +x -->
+    <path id="v-leaf" d="M0 0C4-5 11-7 16-5 12 1 5 3 0 0Z"/>
+    <g id="v-branch">
+      <path d="M0 0C-4-16-10-31-20-45" fill="none"/>
+      <use href="#v-leaf" transform="translate(-3 -11) rotate(-152)"/>
+      <use href="#v-leaf" transform="translate(-4 -13) rotate(-44)"/>
+      <use href="#v-leaf" transform="translate(-9 -26) rotate(-160)"/>
+      <use href="#v-leaf" transform="translate(-10 -28) rotate(-52)"/>
+      <use href="#v-leaf" transform="translate(-17 -40) rotate(-168)"/>
+    </g>
+    <g id="v-sprig">
+      <path d="M0 0C-3-11-8-21-15-31" fill="none"/>
+      <use href="#v-leaf" transform="translate(-3 -9) rotate(-150)"/>
+      <use href="#v-leaf" transform="translate(-4 -11) rotate(-46)"/>
+      <use href="#v-leaf" transform="translate(-11 -24) rotate(-160)"/>
+    </g>
+  </defs>
+
+  <!-- soft stone-coloured washes behind the vessels -->
+  <g fill="url(#v-mist)">
+    <ellipse cx="104" cy="184" rx="82" ry="76"/>
+    <ellipse cx="258" cy="168" rx="94" ry="92"/>
+    <ellipse cx="412" cy="186" rx="80" ry="74"/>
+  </g>
+
+  <g fill="none" stroke="url(#v-gold)" stroke-width="1.9" stroke-linecap="round"
+     stroke-linejoin="round">
+
+    <!-- olive branches rising behind the great vessel -->
+    <g transform="translate(238 118) rotate(-18)"><use href="#v-branch" fill="url(#v-gold)" stroke-width="1.5"/></g>
+    <g transform="translate(280 118) rotate(18) scale(-1 1)"><use href="#v-branch" fill="url(#v-gold)" stroke-width="1.5"/></g>
+    <g transform="translate(46 152) rotate(-26)"><use href="#v-sprig" fill="url(#v-gold)" stroke-width="1.4"/></g>
+    <g transform="translate(476 158) rotate(26) scale(-1 1)"><use href="#v-sprig" fill="url(#v-gold)" stroke-width="1.4"/></g>
+
+    <!-- 1. tall amphora, two handles -->
+    <g transform="translate(76 138)">
+      <path d="M-15 0C-15 8-10 10-10 20C-10 40-28 46-28 72C-28 96-19 112-11 112L11 112C19 112 28 96 28 72C28 46 10 40 10 20C10 10 15 8 15 0"/>
+      <ellipse cx="0" cy="0" rx="15" ry="4.4"/>
+      <path d="M-12 6C-40 5-46 30-25 56"/>
+      <path d="M12 6C40 5 46 30 25 56"/>
+      <path d="M-9 76C-4 70 4 70 9 76 4 83-4 83-9 76Z" stroke-width="1.4"/>
+    </g>
+
+    <!-- 2. round-bellied jug, one handle -->
+    <g transform="translate(158 162)">
+      <path d="M-12 0C-12 7-8 9-8 17C-8 34-25 38-25 60C-25 78-17 88-10 88L10 88C17 88 25 78 25 60C25 38 8 34 8 17C8 9 12 7 12 0"/>
+      <ellipse cx="0" cy="0" rx="12" ry="3.6"/>
+      <path d="M10 5C34 4 40 26 22 46"/>
+      <path d="M0 54C6 60 6 64 0 70-6 64-6 60 0 54Z" stroke-width="1.4"/>
+    </g>
+
+    <!-- 3. the great vessel, centre -->
+    <g transform="translate(258 118)">
+      <path d="M-19 0C-19 9-12 12-12 24C-12 46-38 52-38 82C-38 112-26 132-16 132L16 132C26 132 38 112 38 82C38 52 12 46 12 24C12 12 19 9 19 0"/>
+      <ellipse cx="0" cy="0" rx="19" ry="5.4"/>
+      <path d="M-14 8C-48 6-56 34-34 63"/>
+      <path d="M14 8C48 6 56 34 34 63"/>
+      <circle cx="0" cy="86" r="13" stroke-width="1.4"/>
+      <path d="M0 99v18" stroke-width="1.4" stroke-opacity=".6"/>
+    </g>
+
+    <!-- 4. squat pot -->
+    <g transform="translate(360 174)">
+      <path d="M-16 0C-24 4-30 22-30 40C-30 62-20 76-10 76L10 76C20 76 30 62 30 40C30 22 24 4 16 0"/>
+      <ellipse cx="0" cy="0" rx="16" ry="4.6"/>
+      <path d="M-11 44C-5 38 5 38 11 44 5 51-5 51-11 44Z" stroke-width="1.4"/>
+    </g>
+
+    <!-- 5. slender vase -->
+    <g transform="translate(444 146)">
+      <path d="M-12 0C-12 8-9 10-9 20C-9 42-22 50-22 74C-22 94-16 104-9 104L9 104C16 104 22 94 22 74C22 50 9 42 9 20C9 10 12 8 12 0"/>
+      <ellipse cx="0" cy="0" rx="12" ry="3.6"/>
+      <path d="M0 60C6 66 6 74 0 80-6 74-6 66 0 60Z" stroke-width="1.4"/>
+      <path d="M0 80v-26" stroke-width="1.2" stroke-opacity=".6"/>
+    </g>
+
+  </g>
+
+  <g fill="#cfd6df" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+     font-size="10" letter-spacing="1.7" text-anchor="middle" opacity=".78">
+    <text x="76" y="272">SARAH</text>
+    <text x="158" y="272">HAGAR</text>
+    <text x="360" y="272">RACHEL</text>
+    <text x="444" y="272">LEAH</text>
+  </g>
+</svg>

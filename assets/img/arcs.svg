@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600"
+     preserveAspectRatio="xMidYMid slice">
+  <!-- blind-emboss arcs, as on the printed cover board -->
+  <g fill="none" stroke="#c9a227" stroke-width="1" stroke-opacity=".13">
+    <path d="M-60 660A260 260 0 0 1 200 400A260 260 0 0 1 460 660"/>
+    <path d="M-60 660A222 222 0 0 1 162 438A222 222 0 0 1 384 660"/>
+    <path d="M-60 660A184 184 0 0 1 124 476A184 184 0 0 1 308 660"/>
+    <path d="M-60 660A146 146 0 0 1 86 514A146 146 0 0 1 232 660"/>
+    <path d="M-60 660A108 108 0 0 1 48 552A108 108 0 0 1 156 660"/>
+  </g>
+  <g fill="none" stroke="#c9a227" stroke-width="1" stroke-opacity=".11">
+    <path d="M-40-60A230 230 0 0 0 190 170"/>
+    <path d="M-40-60A192 192 0 0 0 152 132"/>
+    <path d="M-40-60A154 154 0 0 0 114 94"/>
+    <path d="M-40-60A116 116 0 0 0 76 56"/>
+  </g>
+</svg>

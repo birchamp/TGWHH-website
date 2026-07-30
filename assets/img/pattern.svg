@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- seamless 45-degree hairline weave; deliberately almost invisible -->
+  <g stroke="#c9a227" stroke-width=".7" stroke-opacity=".055" fill="none">
+    <path d="M-8 8 8-8M4 20 20 4M16 32 32 16M28 44 44 28M40 56 56 40"/>
+    <path d="M-8 40 40-8" stroke-opacity=".03"/>
+  </g>
+</svg>
