@@ -1,13 +1,16 @@
 # thegodwhohearsher.com
 
-A single-page marketing site for **The God Who Hears Her** — a 60-day devotional through
-the women of Genesis by Dr. Connie Champeon.
+Marketing site for **The God Who Hears Her** — a 60-day devotional through the women of
+Genesis by Dr. Connie Champeon.
 
 The site has exactly one job: **collect an email address in exchange for the free sample
-chapter PDF.** Every section on the page points at that form.
+chapter PDF.** A long landing page makes the case, and a small library of free devotions
+under `/devotions/` brings people in from search — every one of those pages carries the
+same form.
 
-It is plain static HTML, CSS, and one small JavaScript file. No build step, no framework,
-no third-party requests at runtime (the webfonts are self-hosted).
+Plain static HTML, CSS, and one small JavaScript file. No framework and no third-party
+requests at runtime (the webfonts are self-hosted). The generated pages are built from
+the manuscript by the scripts in `build/`.
 
 ---
 
@@ -58,7 +61,47 @@ collecting.
 
 ---
 
-## 2. Deploy
+## 2. The free devotion library — where the traffic comes from
+
+`/devotions/` holds five full devotions from the manuscript, free and ungated, each
+carrying the same capture form as the landing page.
+
+This is not a blog for its own sake. A one-page site with 600 words can only rank for
+the book's own title, which nobody searches for before launch. Each of these pages
+targets a phrase women are already searching — "ezer kenegdo meaning", "Leah unloved",
+"Rebekah watered the camels" — and there is an established audience for exactly this
+material (Proverbs 31 Ministries, Salvation Army women's ministries, and dozens of
+bloggers publish on the same passages). Organic search feeds the list; the list sells the
+book.
+
+The pages are generated from the manuscript:
+
+```bash
+python3 build/make-devotions.py path/to/manuscript.md          # dark theme
+python3 build/make-devotions.py path/to/manuscript.md --light   # cream theme
+```
+
+That writes `devotions/index.html`, one page per entry, and regenerates `sitemap.xml`.
+To change which devotions are published, edit the `DEVOTIONS` list at the top of the
+script — each entry sets the manuscript heading, the URL slug, and the `<title>` and
+meta description used in search results. The `<h1>` keeps Connie's own heading; only the
+`<title>` is written for search.
+
+**The five free pages deliberately exclude the three Hagar devotions in the sample PDF.**
+The gated thing has to be different from the free thing, or subscribing buys the reader
+nothing. If you swap devotions in or out, keep that separation.
+
+### What to do next with this
+
+The pages are the asset; they still need to be found.
+
+1. **Submit the sitemap** in Google Search Console once the domain is live.
+2. **Publish more of them over time.** Five is a start; fifteen to twenty covers most of
+   the searchable ground in Genesis, and each one is another door into the list.
+3. **Link to them from anywhere Connie already speaks** — her ministry bio, conference
+   handouts, church newsletters. Links are what make the pages rank.
+
+## 3. Deploy
 
 Any static host works. Upload the repository root as-is.
 
@@ -71,10 +114,12 @@ Then point `thegodwhohearsher.com` at the host and make sure HTTPS is on.
 
 ---
 
-## 3. Files
+## 4. Files
 
 ```
-index.html                     the whole page
+index.html                     the landing page
+light.html                     cream variant (generated)
+devotions/                     five free devotions + index (generated)
 assets/css/styles.css          all styling
 assets/css/fonts.css           @font-face rules (generated)
 assets/js/main.js              form handling, scroll reveals, sticky CTA
@@ -86,7 +131,12 @@ assets/img/pattern.svg         near-invisible page texture
 assets/img/favicon.svg         gold ear mark
 assets/img/og-image.png        1200x630 social share card (generated)
 downloads/*.pdf                the free sample chapter (generated)
-build/                         scripts that regenerate the generated files
+build/manuscript.py            shared manuscript parsing
+build/make-devotions.py        generates devotions/ and sitemap.xml
+build/make-sample-pdf.py       generates the sample-chapter PDF
+build/make-light.py            generates light.html
+build/check-contrast.mjs       WCAG audit across both themes
+build/make-og-image.mjs        generates the social share card
 netlify.toml, robots.txt, sitemap.xml
 ```
 
@@ -125,8 +175,6 @@ aside first), drop the `noindex` line, and set `data-theme="light"` on the new
 
 ### Colour
 
-| Token | Value |
-| --- | --- |
 | Token | Dark | Light |
 | --- | --- | --- |
 | Page | `#0f1419` | `#f8f3e9` |
@@ -156,20 +204,21 @@ node build/check-contrast.mjs        # prints PASS/FAIL per element, both themes
 
 ---
 
-## 4. Regenerating the built files
+## 5. Regenerating the built files
 
 Both scripts need `python3` and a Chromium binary. Set `CHROME_PATH` if Chromium is not
 at the default location.
 
-**The sample-chapter PDF** — three Hagar devotions, a welcome note, and a closing page,
-extracted straight from the manuscript:
+**Everything from the manuscript** (do these two after any manuscript edit):
 
 ```bash
-python3 build/make-sample-pdf.py path/to/manuscript.md
+python3 build/make-sample-pdf.py path/to/manuscript.md   # the gated PDF
+python3 build/make-devotions.py  path/to/manuscript.md   # the free pages + sitemap
+python3 build/make-light.py                              # refresh light.html
 ```
 
-Edit the `WANTED` list at the top of that script to change which devotions go in the
-sample.
+Edit `WANTED` in `make-sample-pdf.py` to change which devotions go in the PDF, and
+`DEVOTIONS` in `make-devotions.py` to change which are published free.
 
 **The social share image:**
 
@@ -186,7 +235,7 @@ node build/make-og-image.mjs
 
 ---
 
-## 5. Three things to swap in before launch
+## 6. Three things to swap in before launch
 
 **A photo of Connie.** The author section currently shows a gold `CC` monogram as a
 placeholder. Drop a square headshot at `assets/img/connie-champeon.jpg` and replace the
@@ -215,7 +264,7 @@ error message if a submission fails. Point that at a real inbox.
 
 ---
 
-## 6. Notes on how it behaves
+## 7. Notes on how it behaves
 
 - **The reader always gets the chapter.** If the form endpoint is unreachable — or was
   never configured — the thank-you panel and download still fire. A broken integration
@@ -227,4 +276,7 @@ error message if a submission fails. Point that at a real inbox.
 - **Accessibility** — skip link, visible focus rings, real labels on every input, and the
   whole page respects `prefers-reduced-motion`.
 - **No analytics or trackers** are included. If you add one, prefer a cookieless option so
-  the page stays consent-banner-free.
+  the page stays consent-banner-free. Worth doing before long: you cannot tell which
+  devotion is earning subscribers without it.
+- **The capture form is on every page**, landing page and devotions alike, and the PDF
+  path is read off the thank-you link so it resolves correctly from any URL depth.

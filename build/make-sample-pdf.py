@@ -17,6 +17,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from manuscript import (  # noqa: E402  (path set above)
+    inline_markup,
+    load_sections,
+    split_scripture,
+    to_paragraphs,
+)
+
 ROOT = Path(__file__).resolve().parent.parent
 CHROME_PATH = os.environ.get(
     "CHROME_PATH", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
@@ -34,49 +42,8 @@ WANTED = [
 DAY_LABELS = ["Day One", "Day Two", "Day Three"]
 
 
-def unescape_markdown(text: str) -> str:
-    """Drop the backslash escapes and stray artifacts left by the export."""
-    text = text.replace("(WEBP)", "")
-    text = re.sub(r"\\([\\`*_{}\[\]()#+\-.!])", r"\1", text)
-    return text.strip()
 
 
-def parse_sections(md: str):
-    """Return {plain heading: [paragraph, ...]} for every `# ` heading."""
-    sections = {}
-    heading, buf = None, []
-    for line in md.splitlines():
-        if line.startswith("# "):
-            if heading:
-                sections[heading] = buf
-            heading, buf = line[2:].strip(), []
-        elif heading is not None:
-            buf.append(line)
-    if heading:
-        sections[heading] = buf
-    return sections
-
-
-def to_paragraphs(lines):
-    """Group raw lines into paragraph blocks."""
-    blocks, current = [], []
-    for line in lines:
-        if line.strip():
-            current.append(line.strip())
-        elif current:
-            blocks.append(" ".join(current))
-            current = []
-    if current:
-        blocks.append(" ".join(current))
-    return [b for b in (unescape_markdown(b) for b in blocks) if b]
-
-
-def inline_markup(text: str) -> str:
-    """Escape HTML, then restore *italics* and **bold**."""
-    out = html.escape(text)
-    out = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", out)
-    out = re.sub(r"\*(.+?)\*", r"<em>\1</em>", out)
-    return out
 
 
 def render_devotion(day_label: str, title: str, paragraphs: list) -> str:
@@ -85,16 +52,13 @@ def render_devotion(day_label: str, title: str, paragraphs: list) -> str:
         f'  <p class="day">{html.escape(day_label)}</p>',
         f"  <h2>{inline_markup(title)}</h2>",
     ]
-    # The first block(s) of every devotion are the Scripture passage, wholly
-    # italicised in the manuscript. Pull those into a highlighted block.
-    body_started = False
-    for block in paragraphs:
-        is_scripture = block.startswith("*") and block.rstrip().endswith(")*")
-        if is_scripture and not body_started:
-            parts.append(f'  <blockquote class="scripture">{inline_markup(block)}</blockquote>')
-        else:
-            body_started = True
-            parts.append(f"  <p>{inline_markup(block)}</p>")
+    scripture, body = split_scripture(paragraphs)
+    if scripture:
+        # one bordered block, however many paragraphs the passage runs to
+        passage = "".join(f"<p>{inline_markup(b)}</p>" for b in scripture)
+        parts.append(f'  <blockquote class="scripture">{passage}</blockquote>')
+    for block in body:
+        parts.append(f"  <p>{inline_markup(block)}</p>")
     parts.append("</section>")
     return "\n".join(parts)
 
@@ -238,6 +202,8 @@ blockquote.scripture {
   color: #3a3f49;
 }
 blockquote.scripture em { font-style: italic; }
+blockquote.scripture p { margin: 0 0 8px; text-align: left; }
+blockquote.scripture p:last-child { margin-bottom: 0; }
 p { margin: 0 0 11px; text-align: justify; hyphens: auto; }
 ul { margin: 0 0 14px; padding-left: 18px; }
 li { margin-bottom: 6px; }
@@ -345,11 +311,8 @@ def build_html(sections) -> str:
 def main():
     if len(sys.argv) < 2:
         raise SystemExit(__doc__)
-    md = Path(sys.argv[1]).read_text(encoding="utf-8")
-    sections = parse_sections(md)
-    # Headings carry markdown bold: `# **Affliction**`.
-    flat = {re.sub(r"^\*\*|\*\*$", "", k).strip(): v for k, v in sections.items()}
-    WORK_HTML.write_text(build_html(flat), encoding="utf-8")
+    sections = load_sections(sys.argv[1])
+    WORK_HTML.write_text(build_html(sections), encoding="utf-8")
 
     OUT_PDF.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(

@@ -13,7 +13,10 @@
      won't store the address anywhere. See README.md.
      ------------------------------------------------------------------ */
   var FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
-  var PDF_PATH = 'downloads/the-god-who-hears-her-sample-chapter.pdf';
+
+  // The PDF's location is read off the thank-you link in the page, so this
+  // works from the landing page and from /devotions/* alike.
+  var PDF_FALLBACK = 'downloads/the-god-who-hears-her-sample-chapter.pdf';
   var PDF_FILENAME = 'The-God-Who-Hears-Her-Sample-Chapter.pdf';
 
   var isConfigured = FORM_ENDPOINT.indexOf('YOUR_FORM_ID') === -1;
@@ -83,10 +86,9 @@
   var email = $('#email');
 
   if (isConfigured) form.setAttribute('action', FORM_ENDPOINT);
-  if (thanksLink) {
-    thanksLink.setAttribute('href', PDF_PATH);
-    thanksLink.setAttribute('download', PDF_FILENAME);
-  }
+
+  var pdfPath = (thanksLink && thanksLink.getAttribute('href')) || PDF_FALLBACK;
+  if (thanksLink) thanksLink.setAttribute('download', PDF_FILENAME);
 
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 
@@ -118,7 +120,7 @@
   /* Hand the PDF over without navigating away from the thank-you panel. */
   function startDownload() {
     var a = document.createElement('a');
-    a.href = PDF_PATH;
+    a.href = pdfPath;
     a.setAttribute('download', PDF_FILENAME);
     a.style.display = 'none';
     document.body.appendChild(a);

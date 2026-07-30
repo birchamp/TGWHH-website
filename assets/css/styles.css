@@ -856,6 +856,229 @@ img, svg { max-width: 100%; height: auto; display: block; }
   body { background: #fff; color: #000; }
 }
 
+
+/* ==========================================================================
+   DEVOTION PAGES — /devotions/
+   Long-form reading. These are the pages search brings people to, so they
+   carry the same capture form as the landing page.
+   ========================================================================== */
+
+.topbar--static {
+  position: sticky;
+  transform: none;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  font-size: .76rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.crumbs a { color: var(--gold); text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.article { padding-block: clamp(40px, 6vw, 72px) clamp(20px, 3vw, 34px); }
+
+.article__title {
+  margin: 0 0 14px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  line-height: 1.1;
+  color: var(--cream);
+}
+.article__title em { font-style: italic; }
+.article__meta {
+  margin: 0;
+  font-size: .86rem;
+  color: var(--text-dim);
+}
+.article__meta em { font-style: italic; }
+
+/* the reading measure: ~68 characters, and a size that invites staying */
+.article .wrap--narrow { max-width: 700px; }
+
+.article p {
+  margin: 0 0 1.15em;
+  font-family: var(--serif);
+  font-size: clamp(1.12rem, .5vw + 1.02rem, 1.32rem);
+  line-height: 1.68;
+  color: var(--text);
+}
+.article p em { font-style: italic; color: var(--cream); }
+.article p strong { font-weight: 600; color: var(--cream); }
+
+.article .scripture {
+  margin: 0 0 1.6em;
+  padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 30px);
+  border: 0;
+  border-left: 2px solid var(--gold);
+  border-radius: 0 3px 3px 0;
+  background: rgba(201, 162, 39, .05);
+}
+.article .scripture p {
+  margin: 0 0 .7em;
+  font-style: italic;
+  font-size: clamp(1.04rem, .4vw + .96rem, 1.18rem);
+  line-height: 1.6;
+  color: #dfe4ec;
+}
+.article .scripture p:last-child { margin-bottom: 0; }
+
+/* mid-article CTA — placed at a paragraph break a third of the way in */
+.inline-cta {
+  margin: clamp(34px, 5vw, 52px) 0;
+  padding: clamp(24px, 3.4vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background:
+    radial-gradient(120% 90% at 50% -20%, rgba(201, 162, 39, .10), transparent 62%),
+    var(--ink-card);
+  text-align: center;
+}
+.inline-cta__lead {
+  margin: 0 0 6px !important;
+  font-family: var(--serif) !important;
+  font-size: 1.18rem !important;
+  line-height: 1.4 !important;
+  color: var(--cream) !important;
+}
+.inline-cta__body {
+  margin: 0 0 20px !important;
+  font-family: var(--sans) !important;
+  font-size: .94rem !important;
+  color: var(--text-dim) !important;
+}
+
+/* prev / next */
+.pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  padding-bottom: clamp(48px, 7vw, 76px);
+}
+.pager__link {
+  display: block;
+  padding: 20px 22px;
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.pager__link:hover { border-color: var(--line); transform: translateY(-2px); }
+.pager__link--next { text-align: right; }
+.pager__dir {
+  display: block;
+  margin-bottom: 6px;
+  font-size: .7rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.pager__title {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  line-height: 1.3;
+  color: var(--cream);
+}
+
+/* ---------- library index ---------- */
+.section--library { padding-bottom: clamp(20px, 3vw, 34px); }
+.dev-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(292px, 1fr));
+  gap: clamp(16px, 2.2vw, 24px);
+  margin: clamp(34px, 5vw, 50px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.dev-card { display: flex; }
+.dev-card__link {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: clamp(24px, 3vw, 32px);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  background: linear-gradient(170deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 58%),
+              var(--ink-card);
+  text-decoration: none;
+  transition: border-color .35s var(--ease), transform .35s var(--ease),
+              box-shadow .35s var(--ease);
+}
+.dev-card__link:hover {
+  border-color: var(--line);
+  transform: translateY(-4px);
+  box-shadow: 0 26px 44px -28px rgba(0, 0, 0, .85);
+}
+.dev-card__tag {
+  margin: 0 0 12px;
+  font-size: .7rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.dev-card__title {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.42rem;
+  line-height: 1.22;
+  color: var(--cream);
+}
+.dev-card__title em { font-style: italic; }
+.dev-card__excerpt {
+  margin: 0 0 20px;
+  font-size: .94rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.dev-card__more {
+  margin-top: auto;
+  font-size: .74rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ---------- "read one first" module on the landing page ---------- */
+.taste__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: clamp(14px, 2vw, 20px);
+  margin: clamp(30px, 4vw, 42px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.taste__all {
+  margin: clamp(26px, 3.4vw, 36px) 0 0;
+  text-align: center;
+}
+
+/* ---------- footer nav ---------- */
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 26px;
+  margin: 0 0 18px;
+}
+.footer__nav a {
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+}
+.footer__nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
 /* ==========================================================================
    LIGHT THEME — cream paper
    Set data-theme="light" on <html>. light.html is generated from index.html
@@ -992,3 +1215,26 @@ img, svg { max-width: 100%; height: auto; display: block; }
 :root[data-theme="light"] .footer__meta--faint { color: #6b6559; }
 
 :root[data-theme="light"] .stickybar { background: rgba(248, 243, 233, .94); }
+
+/* devotion pages, light theme */
+:root[data-theme="light"] .article .scripture {
+  background: rgba(201, 162, 39, .08);
+}
+:root[data-theme="light"] .article .scripture p { color: #3a372f; }
+:root[data-theme="light"] .article p em,
+:root[data-theme="light"] .article p strong { color: #2b2a25; }
+:root[data-theme="light"] .inline-cta {
+  background:
+    radial-gradient(120% 90% at 50% -20%, rgba(201, 162, 39, .14), transparent 62%),
+    #fffdf8;
+}
+:root[data-theme="light"] .dev-card__link {
+  background: linear-gradient(170deg, #fffefa, #fdf9f0 62%);
+  border-color: rgba(72, 62, 42, .13);
+  box-shadow: 0 10px 24px -20px rgba(90, 72, 34, .4);
+}
+:root[data-theme="light"] .dev-card__link:hover {
+  border-color: var(--line);
+  box-shadow: 0 22px 38px -26px rgba(90, 72, 34, .45);
+}
+:root[data-theme="light"] .pager__link { border-color: rgba(72, 62, 42, .13); }

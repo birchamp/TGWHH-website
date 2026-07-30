@@ -35,6 +35,20 @@ const TARGETS = [
   ['.btn--gold .btn__label', 'CTA button label'],
   ['.thanks__body', 'thank-you body'],
   ['.thanks__fine', 'thank-you fine print'],
+  ['.crumbs a', 'breadcrumb link'],
+  ['.article__title', 'article title'],
+  ['.article__meta', 'article byline'],
+  ['.article .scripture p', 'article scripture'],
+  ['.article > .wrap > p', 'article body copy'],
+  ['.inline-cta__lead', 'inline CTA lead'],
+  ['.inline-cta__body', 'inline CTA body'],
+  ['.pager__dir', 'pager direction'],
+  ['.pager__title', 'pager title'],
+  ['.dev-card__tag', 'devotion card tag'],
+  ['.dev-card__title', 'devotion card title'],
+  ['.dev-card__excerpt', 'devotion card excerpt'],
+  ['.dev-card__more', 'devotion card link'],
+  ['.footer__nav a', 'footer nav link'],
   ['.display__line', 'hero display line 1'],
   ['.display__script', 'hero display script'],
   ['.thanks__title span', 'thank-you name'],
@@ -51,7 +65,13 @@ const browser = await chromium.launch({
   args: ['--no-sandbox'],
 });
 
-for (const file of ['index.html', 'light.html']) {
+const FILES = process.argv.slice(3);
+for (const file of (FILES.length ? FILES : [
+  'index.html',
+  'light.html',
+  'devotions/index.html',
+  'devotions/ezer-kenegdo-what-helper-really-means.html',
+])) {
   const page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
   await page.goto(new URL(file, BASE).href, { waitUntil: 'networkidle' });
   // reveal everything and open the thank-you panel so its text is measurable
@@ -138,7 +158,7 @@ for (const file of ['index.html', 'light.html']) {
 
   console.log('\n=== ' + file + ' ===');
   for (const r of rows) {
-    if (r.missing) { console.log('  ?? missing ' + r.sel); continue; }
+    if (r.missing) continue;  // selector not present on this page type
     const ok = r.ratio >= r.need;
     if (!ok) failures++;
     console.log(`  ${ok ? 'PASS' : 'FAIL'} ${String(r.ratio).padStart(5)}:1 (need ${r.need})  ${r.size}px  ${r.label}${r.note ? ' [' + r.note + ']' : ''}  fg(${r.fg}) bg(${r.bg})`);
