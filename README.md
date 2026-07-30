@@ -90,6 +90,31 @@ build/                         scripts that regenerate the generated files
 netlify.toml, robots.txt, sitemap.xml
 ```
 
+### Two colour ways
+
+| Page | Look |
+| --- | --- |
+| `index.html` | dark — deep slate ground, the original cover palette |
+| `light.html` | light — cream paper, deep antique gold |
+
+`light.html` is **generated** from `index.html`, so the markup can never drift:
+
+```bash
+python3 build/make-light.py
+```
+
+The script only sets `data-theme="light"` on `<html>`, swaps the `theme-color`, and adds
+`noindex` so the two variants don't compete in search while you decide. All the light
+styling lives in one block at the bottom of `assets/css/styles.css`
+(`:root[data-theme="light"] { … }`).
+
+In both themes the **book cover mock stays dark** — it is a physical object sitting on the
+page, and a dark board on cream is how the printed book actually looks.
+
+**To make light the live site:** rename `light.html` to `index.html` (move the dark one
+aside first), drop the `noindex` line, and set `data-theme="light"` on the new
+`index.html`. Then either delete `build/make-light.py` or invert it.
+
 ### Typography
 
 | Role | Face |
@@ -102,11 +127,32 @@ netlify.toml, robots.txt, sitemap.xml
 
 | Token | Value |
 | --- | --- |
-| Background | `#0f1419` |
-| Card / raised | `#191f2a` |
-| Gold | `#c9a227` |
-| Gold highlight | `#e5cd85` |
-| Cream text | `#f4efe6` |
+| Token | Dark | Light |
+| --- | --- | --- |
+| Page | `#0f1419` | `#f8f3e9` |
+| Card / raised | `#191f2a` | `#fffdf8` |
+| Gold (as text) | `#c9a227` | `#7d5f0f` |
+| Gold, deeper | `#e5cd85` | `#6a5008` |
+| Body text | `#cbd2dc` | `#4a463f` |
+| Headings | `#f4efe6` | `#2b2a25` |
+
+The gold differs between themes because a bright `#c9a227` only reaches 3.3:1 on cream —
+too low for small text. On the dark ground the same gold is 7.7:1, so it stays.
+
+### Contrast
+
+Every text colour in both themes meets **WCAG 2.1 AA** — 4.5:1 for body and UI text, 3:1
+for large display type. That includes the gradient-filled headlines, which are checked
+against their *lightest* gradient stop, and the input placeholders.
+
+The audit is worth re-running after any colour change. It measures composited computed
+styles in a real browser rather than trusting the source values:
+
+```bash
+npm i playwright
+python3 -m http.server 8137 &
+node build/check-contrast.mjs        # prints PASS/FAIL per element, both themes
+```
 
 ---
 
